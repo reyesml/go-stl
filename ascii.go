@@ -38,6 +38,7 @@ import (
 
 // scanState is used as a simple state machine for parsing the STL file
 type scanState int
+
 const (
 	// start is the state at the beginning of scanning
 	start scanState = iota
@@ -68,7 +69,7 @@ func DecodeASCII(r io.Reader) (*File, error) {
 
 	file := File{}
 	var face *Face
-	var verts [][3]float32
+	var verts []Vertex
 
 	state := start
 	for scanner.Scan() {
@@ -146,7 +147,7 @@ func DecodeASCII(r io.Reader) (*File, error) {
 			if err != nil {
 				return nil, err
 			}
-			verts = append(verts, v)
+			verts = append(verts, Vertex{v[0], v[1], v[2]})
 			// continue looping
 			state = loop
 
@@ -198,4 +199,3 @@ func scanFloat32(scanner *bufio.Scanner) (float32, error) {
 	n, err := strconv.ParseFloat(scanner.Text(), 32)
 	return float32(n), err
 }
-

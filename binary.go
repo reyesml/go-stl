@@ -18,7 +18,7 @@ const (
 
 // Header is the metadata of a parsed STL file.
 type Header struct {
-	Comment [commentSize]byte
+	Comment      [commentSize]byte
 	NumTriangles uint32
 }
 
@@ -29,10 +29,24 @@ func (h Header) String() string {
 // Face contains the vertex and normal data for a triangle in the STL mesh.
 type Face struct {
 	Normal [3]float32
-	// TODO Triangle Type
-	Verts [3][3]float32
+	Verts  [3]Vertex
 
 	AttributeByteCount uint16
+}
+
+type Vertex struct {
+	X float32
+	Y float32
+	Z float32
+}
+
+// Scale returns a new vertex, scaled by a factor of s.
+func (v Vertex) Scale(s float64) Vertex {
+	return Vertex{
+		X: v.X * float32(s),
+		Y: v.Y * float32(s),
+		Z: v.Z * float32(s),
+	}
 }
 
 // DecodeBinary parses all the faces from an STL binary file.
@@ -52,8 +66,8 @@ func DecodeBinary(r io.Reader) (*File, error) {
 
 // BinaryEncoder is used for serializing STL mesh data in the binary format.
 type BinaryEncoder struct {
-	w io.Writer
-	s io.Seeker
+	w     io.Writer
+	s     io.Seeker
 	faces uint32
 }
 
@@ -96,8 +110,8 @@ func (e *BinaryEncoder) WriteFace(f Face) error {
 
 // WriteTriangle writes a new face for the given triangle points wihtout
 // calculating the normal.
-func (e *BinaryEncoder) WriteTriangle(a, b, c [3]float32) error {
-	return e.WriteFace(Face{Verts: [3][3]float32{ a, b, c }})
+func (e *BinaryEncoder) WriteTriangle(a, b, c Vertex) error {
+	return e.WriteFace(Face{Verts: [3]Vertex{a, b, c}})
 }
 
 // Close writes the total face count if it wasn't provided up front. If
