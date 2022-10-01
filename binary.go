@@ -28,10 +28,23 @@ func (h Header) String() string {
 
 // Face contains the vertex and normal data for a triangle in the STL mesh.
 type Face struct {
-	Normal [3]float32
-	Verts  [3]Vertex
+	Normal   [3]float32
+	Triangle Triangle
 
 	AttributeByteCount uint16
+}
+
+type Triangle struct {
+	Vertices [3]Vertex
+}
+
+func NewTriangle(a, b, c Vertex) Triangle {
+	return Triangle{Vertices: [3]Vertex{a, b, c}}
+}
+
+// Scale returns a new Triangle with each vertex scaled by a factor of s.
+func (t Triangle) Scale(s float64) Triangle {
+	return NewTriangle(t.Vertices[0].Scale(s), t.Vertices[1].Scale(s), t.Vertices[2].Scale(s))
 }
 
 type Vertex struct {
@@ -111,7 +124,7 @@ func (e *BinaryEncoder) WriteFace(f Face) error {
 // WriteTriangle writes a new face for the given triangle points wihtout
 // calculating the normal.
 func (e *BinaryEncoder) WriteTriangle(a, b, c Vertex) error {
-	return e.WriteFace(Face{Verts: [3]Vertex{a, b, c}})
+	return e.WriteFace(Face{Triangle: NewTriangle(a, b, c)})
 }
 
 // Close writes the total face count if it wasn't provided up front. If

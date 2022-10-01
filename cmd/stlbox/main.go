@@ -33,7 +33,7 @@ func main() {
 		maxZ float32 = -math.MaxFloat32
 	)
 	for _, face := range mesh.Faces {
-		v := face.Verts
+		v := face.Triangle.Vertices
 		minX = minimum(minX, v[0].X, v[1].X, v[2].X)
 		minY = minimum(minY, v[0].Y, v[1].Y, v[2].Y)
 		minZ = minimum(minZ, v[0].Z, v[1].Z, v[2].Z)

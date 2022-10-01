@@ -35,9 +35,7 @@ func main() {
 
 	for _, face := range mesh.Faces {
 		face.Normal = [3]float32{0, 0, 0}
-		for i, v := range face.Verts {
-			face.Verts[i] = v.Scale(*scale)
-		}
+		face.Triangle = face.Triangle.Scale(*scale)
 		err = encoder.WriteFace(face)
 		check(err)
 	}

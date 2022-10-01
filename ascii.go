@@ -158,7 +158,7 @@ func DecodeASCII(r io.Reader) (*File, error) {
 			if len(verts) != 3 {
 				return nil, fmt.Errorf("Expected 3 vertices")
 			}
-			copy(face.Verts[:], verts)
+			copy(face.Triangle.Vertices[:], verts)
 			file.Faces = append(file.Faces, *face)
 			state = endfacet
 		}
