@@ -34,27 +34,47 @@ func main() {
 	)
 	for _, face := range mesh.Faces {
 		v := face.Verts
-		minX = min(min(minX, v[0].X), min(v[1].X, v[2].X))
-		minY = min(min(minY, v[0].Y), min(v[1].Y, v[2].Y))
-		minZ = min(min(minZ, v[0].Z), min(v[1].Z, v[2].Z))
-		maxX = max(max(maxX, v[0].X), max(v[1].X, v[2].X))
-		maxY = max(max(maxY, v[0].Y), max(v[1].Y, v[2].Y))
-		maxZ = max(max(maxZ, v[0].Z), max(v[1].Z, v[2].Z))
+		minX = minimum(minX, v[0].X, v[1].X, v[2].X)
+		minY = minimum(minY, v[0].Y, v[1].Y, v[2].Y)
+		minZ = minimum(minZ, v[0].Z, v[1].Z, v[2].Z)
+		maxX = maximum(maxX, v[0].X, v[1].X, v[2].X)
+		maxY = maximum(maxY, v[0].Y, v[1].Y, v[2].Y)
+		maxZ = maximum(maxZ, v[0].Z, v[1].Z, v[2].Z)
 	}
 	fmt.Printf("min-corner (%f,%f,%f)\n", minX, minY, minZ)
 	fmt.Printf("max-corner (%f,%f,%f)\n", maxX, maxY, maxZ)
 }
 
-func min(a, b float32) float32 {
-	if a < b {
-		return a
+func minimum(nums ...float32) float32 {
+	count := len(nums)
+	if count == 0 {
+		return 0
 	}
-	return b
+	m := nums[0]
+	for i, n := range nums {
+		if i == count-1 {
+			break
+		}
+		if n < m {
+			m = n
+		}
+	}
+	return m
 }
 
-func max(a, b float32) float32 {
-	if a > b {
-		return a
+func maximum(nums ...float32) float32 {
+	count := len(nums)
+	if count == 0 {
+		return 0
 	}
-	return b
+	m := nums[0]
+	for i, n := range nums {
+		if i == count-1 {
+			break
+		}
+		if n > m {
+			m = n
+		}
+	}
+	return m
 }
