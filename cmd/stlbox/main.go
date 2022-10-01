@@ -34,12 +34,12 @@ func main() {
 	)
 	for _, face := range mesh.Faces {
 		v := face.Verts
-		minX = min(min(minX, v[0][0]), min(v[1][0], v[2][0]))
-		minY = min(min(minY, v[0][1]), min(v[1][1], v[2][1]))
-		minZ = min(min(minZ, v[0][2]), min(v[1][2], v[2][2]))
-		maxX = max(max(maxX, v[0][0]), max(v[1][0], v[2][0]))
-		maxY = max(max(maxY, v[0][1]), max(v[1][1], v[2][1]))
-		maxZ = max(max(maxZ, v[0][2]), max(v[1][2], v[2][2]))
+		minX = min(min(minX, v[0].X), min(v[1].X, v[2].X))
+		minY = min(min(minY, v[0].Y), min(v[1].Y, v[2].Y))
+		minZ = min(min(minZ, v[0].Z), min(v[1].Z, v[2].Z))
+		maxX = max(max(maxX, v[0].X), max(v[1].X, v[2].X))
+		maxY = max(max(maxY, v[0].Y), max(v[1].Y, v[2].Y))
+		maxZ = max(max(maxZ, v[0].Z), max(v[1].Z, v[2].Z))
 	}
 	fmt.Printf("min-corner (%f,%f,%f)\n", minX, minY, minZ)
 	fmt.Printf("max-corner (%f,%f,%f)\n", maxX, maxY, maxZ)

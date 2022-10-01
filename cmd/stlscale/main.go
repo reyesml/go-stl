@@ -10,6 +10,7 @@ import (
 
 var out = flag.String("o", "", "Output file for the scaled model")
 var scale = flag.Float64("s", 1, "Scalar multiplier for the model")
+
 // TODO Binary vs Ascii output
 
 func main() {
@@ -33,11 +34,9 @@ func main() {
 	check(err)
 
 	for _, face := range mesh.Faces {
-		face.Normal = [3]float32{0,0,0}
-		for i := range face.Verts {
-			for j := range face.Verts[i] {
-				face.Verts[i][j] *= float32(*scale)
-			}
+		face.Normal = [3]float32{0, 0, 0}
+		for i, v := range face.Verts {
+			face.Verts[i] = v.Scale(*scale)
 		}
 		err = encoder.WriteFace(face)
 		check(err)
